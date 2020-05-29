@@ -26,7 +26,10 @@ public class PlayerController : MonoBehaviour
     public float aimRate = 3;
     public float moveRate = 5;
 
-    public Rigidbody2D ball;
+    private Ball ball;
+
+    public enum TankState { EMPTY, LOADED, FIRING }
+    public TankState currTankState = TankState.EMPTY;
 
     void Awake()
     {
@@ -49,12 +52,12 @@ public class PlayerController : MonoBehaviour
         // move the tank
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Debug.Log("left");
+            //Debug.Log("left");
             bodyRb.AddForce(Vector2.left * moveRate);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            Debug.Log("right");
+            //Debug.Log("right");
             bodyRb.AddForce(Vector2.right * moveRate);
         }
 
@@ -72,23 +75,55 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Rigidbody2D newBall = Instantiate(ball);
-            newBall.transform.position = gunHitBox.transform.position;
-            Debug.Log(gunPivot.right);
-            newBall.AddForce(gunPivot.right * 10, ForceMode2D.Impulse);
+            if(currTankState == TankState.LOADED)
+            {
+                currTankState = TankState.FIRING;
+                ball.transform.position = gunHitBox.transform.position;
+                Debug.Log(gunPivot.right);
+                ball.gameObject.SetActive(true);
+                ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 10, ForceMode2D.Impulse);
+
+                //currTankState = TankState.FIRING;
+                //ball = null;
+            }
         }
     }
 
     void clampRotation(float angle)
     {
         float rot = gunPivot.transform.localRotation.eulerAngles.z;
+        //rot += angle;
+        
         rot += angle;
-        Debug.Log("preclamp: " + rot);
-        rot = Mathf.Clamp(rot, gunAngleLimits.x, gunAngleLimits.y);
-        Debug.Log("postclamp: " + rot);
-        gunPivot.eulerAngles = new Vector3(0, 0, rot);
+        rot = Mathf.Clamp(rot + Mathf.Abs(gunAngleLimits.x), 0 + Mathf.Abs(gunAngleLimits.x), gunAngleLimits.y + Mathf.Abs(gunAngleLimits.x));
+
+        rot = (rot - Mathf.Abs(gunAngleLimits.x)) % 360;
+        
+        gunPivot.transform.localEulerAngles = new Vector3(0, 0, rot);
 
         //gunPivot.transform.Rotate(0, 0, aimRate);
     }
 
+    public void setBall(Ball theBall)
+    {
+        if(currTankState == TankState.EMPTY)
+        {
+            ball = theBall;
+            ball.gameObject.SetActive(false);
+
+            currTankState = TankState.LOADED;
+        }
+    }
+
+    public void unsetBall(Ball theBall)
+    {
+        if (currTankState != TankState.EMPTY)
+        {
+            if(theBall == ball)
+            {
+                ball = null;
+                currTankState = TankState.EMPTY;
+            }
+        }
+    }
 }
