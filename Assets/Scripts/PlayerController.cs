@@ -47,36 +47,38 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // move the tank
-        if(Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             Debug.Log("left");
             bodyRb.AddForce(Vector2.left * moveRate);
-        } else if(Input.GetKey(KeyCode.RightArrow))
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
             Debug.Log("right");
             bodyRb.AddForce(Vector2.right * moveRate);
         }
 
         // rotate the gun
-        if(Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             clampRotation(aimRate);
             //gunRb.rotation += (aimRate);
-        } else if(Input.GetKey(KeyCode.DownArrow))
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
             clampRotation(-aimRate);
             //gunRb.rotation += -(aimRate);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject.Instantiate(ball);
-            ball.transform.position = gunHitBox.transform.position;
-            ball.transform.rotation = gunHitBox.transform.rotation;
-            ball.GetComponent<Rigidbody2D>().AddForce(new Vector2(10,10),ForceMode2D.Impulse);
+            Rigidbody2D newBall = Instantiate(ball);
+            newBall.transform.position = gunHitBox.transform.position;
+            Debug.Log(gunPivot.right);
+            newBall.AddForce(gunPivot.right * 10, ForceMode2D.Impulse);
         }
     }
-    
+
     void clampRotation(float angle)
     {
         float rot = gunPivot.transform.localRotation.eulerAngles.z;
