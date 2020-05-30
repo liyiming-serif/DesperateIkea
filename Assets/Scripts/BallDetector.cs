@@ -23,7 +23,7 @@ public class BallDetector : MonoBehaviour
         if (obj != null)
         {
             Debug.Log("got ball!");
-            PlayerController.Instance().setBall(obj);
+            TankController.Instance().SetBall(obj);
         }
     }
 
@@ -33,7 +33,7 @@ public class BallDetector : MonoBehaviour
         if (obj != null)
         {
             Debug.Log("unsetting ball!");
-            PlayerController.Instance().unsetBall(obj);
+            TankController.Instance().UnsetBall(obj);
         }
     }
 }

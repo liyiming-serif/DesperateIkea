@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class TankController : MonoBehaviour
 {
-    private static PlayerController m_instance;
+    private static TankController m_instance;
 
-    public static PlayerController Instance()
+    public static TankController Instance()
     {
         if (m_instance == null)
         {
-            m_instance = new PlayerController();
+            m_instance = new TankController();
         }
         return m_instance;
     }
@@ -25,11 +25,14 @@ public class PlayerController : MonoBehaviour
 
     public float aimRate = 3;
     public float moveRate = 5;
+    public float jumpForce = 10;
 
     private Ball ball;
 
     public enum TankState { EMPTY, LOADED, FIRING }
     public TankState currTankState = TankState.EMPTY;
+
+    bool canJump = false;
 
     void Awake()
     {
@@ -52,12 +55,10 @@ public class PlayerController : MonoBehaviour
         // move the tank
         if (Input.GetKey(KeyCode.A))
         {
-            //Debug.Log("left");
             bodyRb.AddForce(Vector2.left * moveRate);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            //Debug.Log("right");
             bodyRb.AddForce(Vector2.right * moveRate);
         }
         clampRotation(getMouseAngle());
@@ -71,25 +72,13 @@ public class PlayerController : MonoBehaviour
                 Debug.Log(gunPivot.right);
                 ball.gameObject.SetActive(true);
                 ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 17, ForceMode2D.Impulse);
-
-                //currTankState = TankState.FIRING;
-                //ball = null;
             }
-
-            //if (Input.GetKey(KeyCode.UpArrow))
-            //{
-            //    clampRotation(aimRate);
-            //}
-            //else if (Input.GetKey(KeyCode.DownArrow))
-            //{
-            //    clampRotation(-aimRate);
-            //}
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
-            bodyRb.AddForce(Vector2.up * 14, ForceMode2D.Impulse);
+            bodyRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
     }
 
@@ -133,22 +122,17 @@ public class PlayerController : MonoBehaviour
 
     void clampRotation(float angle)
     {
-        Debug.Log("angle: " + angle);
         float rot = gunPivot.transform.localRotation.eulerAngles.z;
         //rot += angle;
         
         rot = Mathf.Clamp(angle, 0, 111);
 
-        //rot = Mathf.Clamp(rot + Mathf.Abs(gunAngleLimits.x), 0 + Mathf.Abs(gunAngleLimits.x), gunAngleLimits.y + Mathf.Abs(gunAngleLimits.x));
-
         rot = (rot - Mathf.Abs(gunAngleLimits.x)) % 360;
         
         gunPivot.transform.localEulerAngles = new Vector3(0, 0, rot);
-
-        //gunPivot.transform.Rotate(0, 0, aimRate);
     }
 
-    public void setBall(Ball theBall)
+    public void SetBall(Ball theBall)
     {
         if(currTankState == TankState.EMPTY)
         {
@@ -159,7 +143,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void unsetBall(Ball theBall)
+    public void UnsetBall(Ball theBall)
     {
         if (currTankState != TankState.EMPTY)
         {
@@ -169,5 +153,12 @@ public class PlayerController : MonoBehaviour
                 currTankState = TankState.EMPTY;
             }
         }
+    }
+
+
+    // sets the boolean to true
+    public void SetJump(bool b)
+    {
+        canJump = b;
     }
 }

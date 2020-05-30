@@ -15,4 +15,21 @@ public class JumpChecker : MonoBehaviour
     {
         
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("terrain"))
+        {
+            TankController.Instance().SetJump(true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("terrain"))
+        {
+            TankController.Instance().SetJump(false);
+        }
+    }
 }
+ 
