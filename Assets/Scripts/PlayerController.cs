@@ -50,52 +50,96 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // move the tank
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             //Debug.Log("left");
             bodyRb.AddForce(Vector2.left * moveRate);
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.D))
         {
             //Debug.Log("right");
             bodyRb.AddForce(Vector2.right * moveRate);
         }
-
+        clampRotation(getMouseAngle());
         // rotate the gun
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetMouseButtonDown(0))
         {
-            clampRotation(aimRate);
-            //gunRb.rotation += (aimRate);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            clampRotation(-aimRate);
-            //gunRb.rotation += -(aimRate);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(currTankState == TankState.LOADED)
+            if (currTankState == TankState.LOADED)
             {
                 currTankState = TankState.FIRING;
                 ball.transform.position = gunHitBox.transform.position;
                 Debug.Log(gunPivot.right);
                 ball.gameObject.SetActive(true);
-                ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 10, ForceMode2D.Impulse);
+                ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 17, ForceMode2D.Impulse);
 
                 //currTankState = TankState.FIRING;
                 //ball = null;
             }
+
+            //if (Input.GetKey(KeyCode.UpArrow))
+            //{
+            //    clampRotation(aimRate);
+            //}
+            //else if (Input.GetKey(KeyCode.DownArrow))
+            //{
+            //    clampRotation(-aimRate);
+            //}
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            bodyRb.AddForce(Vector2.up * 14, ForceMode2D.Impulse);
+        }
+    }
+
+    float getMouseAngle()
+    {
+        Vector2 temp = Input.mousePosition;
+        temp -= (Vector2) gunPivot.transform.position;
+        float mouseAngle = Mathf.Atan(temp.y / temp.x);
+        #region atan BS
+        if (temp.x > 0)
+        {
+
+        }
+        else if (temp.x < 0)
+        {
+            if (temp.y >= 0)
+            {
+                mouseAngle += Mathf.PI;
+            }
+            else
+            {
+                mouseAngle += -Mathf.PI;
+            }
+        }
+        else if (Mathf.Abs(temp.x) <= 0.001 && temp.y > 0)
+        {
+            mouseAngle = Mathf.PI / 2f;
+        }
+        else if (Mathf.Abs(temp.x) <= 0.001 && temp.y < 0)
+        {
+            mouseAngle = -Mathf.PI / 2f;
+        }
+        #endregion
+
+        if (float.IsNaN(mouseAngle))
+            mouseAngle = 0;
+
+       
+        return mouseAngle * Mathf.Rad2Deg;
     }
 
     void clampRotation(float angle)
     {
+        Debug.Log("angle: " + angle);
         float rot = gunPivot.transform.localRotation.eulerAngles.z;
         //rot += angle;
         
-        rot += angle;
-        rot = Mathf.Clamp(rot + Mathf.Abs(gunAngleLimits.x), 0 + Mathf.Abs(gunAngleLimits.x), gunAngleLimits.y + Mathf.Abs(gunAngleLimits.x));
+        rot = Mathf.Clamp(angle, 0, 111);
+
+        //rot = Mathf.Clamp(rot + Mathf.Abs(gunAngleLimits.x), 0 + Mathf.Abs(gunAngleLimits.x), gunAngleLimits.y + Mathf.Abs(gunAngleLimits.x));
 
         rot = (rot - Mathf.Abs(gunAngleLimits.x)) % 360;
         
