@@ -34,6 +34,9 @@ public class TankController : MonoBehaviour
 
     bool canJump = false;
 
+    private bool enableControls = false;
+
+
     void Awake()
     {
         if (!m_instance)
@@ -52,33 +55,37 @@ public class TankController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // move the tank
-        if (Input.GetKey(KeyCode.A))
+        if(enableControls)
         {
-            bodyRb.AddForce(Vector2.left * moveRate);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            bodyRb.AddForce(Vector2.right * moveRate);
-        }
-        clampRotation(getMouseAngle());
-        // rotate the gun
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (currTankState == TankState.LOADED)
+            // move the tank
+            if (Input.GetKey(KeyCode.A))
             {
-                currTankState = TankState.FIRING;
-                ball.transform.position = gunHitBox.transform.position;
-                Debug.Log(gunPivot.right);
-                ball.gameObject.SetActive(true);
-                ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 17, ForceMode2D.Impulse);
+                bodyRb.AddForce(Vector2.left * moveRate);
             }
-        }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                bodyRb.AddForce(Vector2.right * moveRate);
+            }
+            clampRotation(getMouseAngle());
+            // rotate the gun
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (currTankState == TankState.LOADED)
+                {
+                    currTankState = TankState.FIRING;
+                    ball.transform.position = gunHitBox.transform.position;
+                    Debug.Log(gunPivot.right);
+                    ball.gameObject.SetActive(true);
+                    ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 17, ForceMode2D.Impulse);
+                }
+            }
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && canJump)
-        {
-            bodyRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            if (Input.GetKeyDown(KeyCode.Space) && canJump)
+            {
+                Debug.Log("trying to jump, bruh");
+                bodyRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            }
         }
     }
 
@@ -156,9 +163,16 @@ public class TankController : MonoBehaviour
     }
 
 
-    // sets the boolean to true
     public void SetJump(bool b)
     {
+        Debug.Log("jump pre? " + b);
         canJump = b;
+        Debug.Log("jump post? " + canJump);
+    }
+
+    public void EnableControls(bool b)
+    {
+        enableControls = b;
+        Debug.Log("enble? " + enableControls);
     }
 }

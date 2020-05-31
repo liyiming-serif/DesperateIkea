@@ -18,11 +18,11 @@ public class BallDetector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
+        //Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
         Ball obj = col.GetComponent<Ball>();
         if (obj != null)
         {
-            Debug.Log("got ball!");
+            //Debug.Log("got ball!");
             TankController.Instance().SetBall(obj);
         }
     }
@@ -32,7 +32,7 @@ public class BallDetector : MonoBehaviour
         Ball obj = col.GetComponent<Ball>();
         if (obj != null)
         {
-            Debug.Log("unsetting ball!");
+            //Debug.Log("unsetting ball!");
             TankController.Instance().UnsetBall(obj);
         }
     }
