@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class TankController : MonoBehaviour
 {
     private static TankController m_instance;
@@ -27,6 +28,8 @@ public class TankController : MonoBehaviour
     public float moveRate = 5;
     public float jumpForce = 10;
 
+    public float shootForce = 10;
+    
     private Ball ball;
 
     public enum TankState { EMPTY, LOADED, FIRING }
@@ -36,6 +39,7 @@ public class TankController : MonoBehaviour
 
     private bool enableControls = false;
 
+    public AudioSource turretAimSound;
 
     void Awake()
     {
@@ -124,7 +128,15 @@ public class TankController : MonoBehaviour
         rot = Mathf.Clamp(angle, 0, 111);
 
         rot = (rot - Mathf.Abs(gunAngleLimits.x)) % 360;
-        
+
+        float angleDiff = Mathf.Abs(gunPivot.transform.localEulerAngles.z - rot);
+        Debug.Log("angle: " + angleDiff);
+        angleDiff = Mathf.Clamp(angleDiff, 0, 4);
+        turretAimSound.volume = Utils.Map(angleDiff, 0, 4, 0, 0.3f);
+
+        Debug.Log(rot + " vs " + gunAngleLimits.x);
+        turretAimSound.pitch = Mathf.Lerp(turretAimSound.pitch, Utils.Map(rot, 0, gunAngleLimits.y, 0.3f, 2), 0.3f);
+
         gunPivot.transform.localEulerAngles = new Vector3(0, 0, rot);
     }
 
@@ -154,14 +166,11 @@ public class TankController : MonoBehaviour
 
     public void SetJump(bool b)
     {
-        Debug.Log("jump pre? " + b);
         canJump = b;
-        Debug.Log("jump post? " + canJump);
     }
 
     public void EnableControls(bool b)
     {
         enableControls = b;
-        Debug.Log("enble? " + enableControls);
     }
 }

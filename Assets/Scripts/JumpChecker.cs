@@ -18,7 +18,7 @@ public class JumpChecker : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("touching: " + LayerMask.LayerToName(other.gameObject.layer));
+        //Debug.Log("touching: " + LayerMask.LayerToName(other.gameObject.layer));
         if (other.gameObject.layer == LayerMask.NameToLayer("terrain"))
         {
             //Debug.Log("can jump");

@@ -8,10 +8,15 @@ public class ThrowHook : MonoBehaviour
 
     GameObject curHook;
 
+    AudioSource src;
+
+    public ParticleSystem poof;
+    public ParticleSystem pew;
+
     // Use this for initialization
     void Start()
     {
-
+        src = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -25,8 +30,17 @@ public class ThrowHook : MonoBehaviour
 
                 curHook = (GameObject)Instantiate(hookPrefab, transform.position, Quaternion.identity);
 
-                curHook.GetComponent<Rigidbody2D>().AddForce(gameObject.transform.right * 17, ForceMode2D.Impulse);
+                src.Play();
+                curHook.GetComponent<Rigidbody2D>().AddForce(transform.right * TankController.Instance().shootForce, ForceMode2D.Impulse);
+                curHook.transform.eulerAngles = TankController.Instance().gun.transform.eulerAngles;
 
+                poof.gameObject.SetActive(true);
+                poof.Play();
+
+                pew.gameObject.SetActive(true);
+                pew.Play();
+
+                curHook.GetComponent<HookController>().anchor = gameObject;
                 rope_active = true;
             }
             else
@@ -34,9 +48,14 @@ public class ThrowHook : MonoBehaviour
                 Destroy(curHook);
 
                 rope_active = false;
-
             }
-            
+        }
+
+        if(rope_active)
+        {
+
         }
     }
+
+
 }

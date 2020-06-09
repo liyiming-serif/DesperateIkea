@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CountDown()
     {
+        /*
         countdownText.gameObject.SetActive(true);
         TankController.Instance().EnableControls(false);
         //Time.timeScale = 0;
@@ -84,6 +85,9 @@ public class GameManager : MonoBehaviour
         countdownText.gameObject.SetActive(false);
         TankController.Instance().EnableControls(true);
         //   Time.timeScale = 1;
+        */
+        yield return new WaitForEndOfFrame();
+        TankController.Instance().EnableControls(true);
     }
 
     public void EndGame(float xPos)
