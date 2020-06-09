@@ -66,20 +66,9 @@ public class TankController : MonoBehaviour
             {
                 bodyRb.AddForce(Vector2.right * moveRate);
             }
-            clampRotation(getMouseAngle());
-            // rotate the gun
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (currTankState == TankState.LOADED)
-                {
-                    currTankState = TankState.FIRING;
-                    ball.transform.position = gunHitBox.transform.position;
-                    Debug.Log(gunPivot.right);
-                    ball.gameObject.SetActive(true);
-                    ball.GetComponent<Rigidbody2D>().AddForce(gunPivot.right * 17, ForceMode2D.Impulse);
-                }
-            }
 
+            // rotate the gun
+            clampRotation(getMouseAngle());
 
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
             {

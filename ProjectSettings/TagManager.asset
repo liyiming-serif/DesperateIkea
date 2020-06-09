@@ -41,12 +41,15 @@ TagManager:
   - name: physics
     uniqueID: 1075108917
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: UI
     uniqueID: 630802431
     locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: player
     uniqueID: 409193589
+    locked: 0
+  - name: water
+    uniqueID: 4238279855
     locked: 0

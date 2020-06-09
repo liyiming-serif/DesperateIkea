@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8992810001149413457}
   - component: {fileID: 7394032813737256755}
   - component: {fileID: 2574763428401378388}
-  - component: {fileID: 5411027769156124408}
   - component: {fileID: 3043685636699403186}
+  - component: {fileID: -8304776005962215509}
   m_Layer: 0
   m_Name: Hook
   m_TagString: Untagged
@@ -105,30 +105,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!233 &5411027769156124408
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2347120418470708407}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.38417962, y: -1.1618205}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!232 &3043685636699403186
 DistanceJoint2D:
   m_ObjectHideFlags: 0
@@ -148,3 +124,25 @@ DistanceJoint2D:
   m_AutoConfigureDistance: 1
   m_Distance: 0.35999998
   m_MaxDistanceOnly: 1
+--- !u!114 &-8304776005962215509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2347120418470708407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30f2b88de5be10d45b51faeddb8b725b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destiny: {x: 0, y: 0}
+  speed: 0.75
+  min_distance: 0.04
+  distance: 2
+  ropePrefab: {fileID: 4583273817233070708, guid: 4eefd3e0b92865a4788915284db60846,
+    type: 3}
+  player: {fileID: 0}
+  lastNode: {fileID: 0}
+  lr: {fileID: 0}
+  Nodes: []
