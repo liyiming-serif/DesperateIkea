@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ThrowHook : MonoBehaviour
+public class HookThrowPoint : MonoBehaviour
 {
     public GameObject hookPrefab;
     public bool rope_active;
