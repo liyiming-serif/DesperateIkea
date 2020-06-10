@@ -71,8 +71,7 @@ public class MusicManager : MonoBehaviour
 
     IEnumerator LoopRandomly()
     {
-        A.volume = 0.27f;
-        B.volume = 0.27f;
+        A.volume = B.volume = 0.38f;
         int currClip;
 
         currClip = RollRandom();

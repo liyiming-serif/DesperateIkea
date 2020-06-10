@@ -10,6 +10,8 @@ public class SoundManager : MonoBehaviour {
         return _instance;
     }
 
+    //public AudioSource
+
     public List<SoundItem> soundItems = new List<SoundItem>();
 
     private void Awake()
