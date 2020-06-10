@@ -4,7 +4,7 @@ using System.Collections;
 /*
  * Defines behaviour for any object a hook can be attached to and fired from.
  * Hook's transform and fire angle is controlled by this obj.
- * Requires: Parent with a collider
+ * Requires: AudioSource
  */
 
 public class AnchorPoint : MonoBehaviour
@@ -14,7 +14,7 @@ public class AnchorPoint : MonoBehaviour
 
     GameObject curHook;
     public GameObject prevAnchor;
-    GameObject parentHitbox;
+    public GameObject hitbox;
 
     //EMPTY: anchor has no rope through it; hooks can be attached
     //PASSED: hook has already passed through this point
@@ -23,6 +23,7 @@ public class AnchorPoint : MonoBehaviour
     public AnchorState currAnchorState = AnchorState.EMPTY;
 
     AudioSource src;
+    GameObject loadedHook;
 
     public ParticleSystem poof;
     public ParticleSystem pew;
@@ -32,14 +33,15 @@ public class AnchorPoint : MonoBehaviour
     {
         src = GetComponent<AudioSource>();
 
-        parentHitbox = gameObject.transform.parent.gameObject;
+        loadedHook = transform.Find("LoadedHook").gameObject;
+
         if (currAnchorState==AnchorState.CURRENT)
         {
-            parentHitbox.layer = LayerMask.NameToLayer("takenAnchor");
+            hitbox.layer = LayerMask.NameToLayer("takenAnchor");
         }
         else
         {
-            parentHitbox.layer = LayerMask.NameToLayer("activeAnchor");
+            hitbox.layer = LayerMask.NameToLayer("activeAnchor");
         }
     }
 
@@ -78,6 +80,15 @@ public class AnchorPoint : MonoBehaviour
                     hookController.StartCoroutine(hookController.RetractHook());
                 }
             }
+        }
+
+        if(curHook == null)
+        {
+            loadedHook.SetActive(true);
+        }
+        else
+        {
+            loadedHook.SetActive(false);
         }
     }
 
