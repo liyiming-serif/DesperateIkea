@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - ActiveThrowPoint
-  - TakenThrowPoint
-  - InactiveThrowPoint
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -23,8 +20,8 @@ TagManager:
   - terrain
   - water
   - rope
-  - 
-  - 
+  - activeAnchor
+  - takenAnchor
   - 
   - 
   - 
@@ -55,4 +52,7 @@ TagManager:
     locked: 0
   - name: water
     uniqueID: 4238279855
+    locked: 0
+  - name: grass
+    uniqueID: 2020364743
     locked: 0

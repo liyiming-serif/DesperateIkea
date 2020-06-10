@@ -122,14 +122,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anchor: {fileID: 0}
   startingSegments: 5
-  ropeMaxLength: 10
   maxDistance: 2
-  minVelocity: 0.3
+  retractSpeedSec: 0.25
+  retractKickback: 0.3
   ropePrefab: {fileID: 4583273817233070708, guid: 4eefd3e0b92865a4788915284db60846,
     type: 3}
   lastSegment: {fileID: 0}
   lr: {fileID: 0}
   ropeSegments: []
+  retractingHook: 0
 --- !u!232 &277576338
 DistanceJoint2D:
   m_ObjectHideFlags: 0

@@ -7,9 +7,11 @@ public class HookController : MonoBehaviour
 {
     public GameObject anchor;
     public int startingSegments;
-    public float ropeMaxLength = 10f;
+    //public float ropeMaxLength = 10f;
     public float maxDistance = 2f;
-    public float minVelocity = 0.3f;
+    //public float minVelocity = 0.3f;
+    public float retractSpeedSec = .25f;
+    public float retractKickback = 0.3f;
 
     public GameObject ropePrefab;
     public GameObject lastSegment;
@@ -18,6 +20,7 @@ public class HookController : MonoBehaviour
     int num_vertices = 1;
     public List<GameObject> ropeSegments = new List<GameObject>();
 
+    public bool retractingHook = false;
     bool hasFired = false;
     bool done = false;
     // Use this for initialization
@@ -72,6 +75,7 @@ public class HookController : MonoBehaviour
         pos2Create *= maxDistance;
         pos2Create += (Vector2)lastSegment.transform.position;
 
+        //create new rope segment from the anchor point
         GameObject go = (GameObject)Instantiate(ropePrefab, pos2Create, Quaternion.identity);
 
         go.transform.SetParent(transform);
@@ -113,6 +117,32 @@ public class HookController : MonoBehaviour
         }
     }
 
+    public IEnumerator RetractHook()
+    {
+        retractingHook = true;
+        while (num_vertices > 1)
+        {
+            //update 2nd to last segment
+            GameObject secondToLastSegment = ropeSegments[num_vertices-2];
+            secondToLastSegment.GetComponent<DistanceJoint2D>().connectedBody = anchor.GetComponent<Rigidbody2D>();
+
+            //remove rope segment starting from the anchor point
+            ropeSegments.Remove(lastSegment);
+            num_vertices--;
+            lr.positionCount = (num_vertices);
+            Destroy(lastSegment);
+
+            lastSegment = secondToLastSegment;
+            if(num_vertices == 1)
+            {
+                gameObject.GetComponent<DistanceJoint2D>().distance = retractKickback;
+            }
+            yield return new WaitForSeconds(retractSpeedSec);
+        }
+        retractingHook = false;
+        Destroy(gameObject);
+    }
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.layer != LayerMask.NameToLayer("player") &&
@@ -123,6 +153,10 @@ public class HookController : MonoBehaviour
             sparks.transform.position = col.contacts[0].point;
         }
 
+        if (col.gameObject.layer == LayerMask.NameToLayer("activeAnchor") && !retractingHook)
+        {
+            
+        }
     }
 
 }
