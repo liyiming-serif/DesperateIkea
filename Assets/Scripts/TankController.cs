@@ -130,11 +130,11 @@ public class TankController : MonoBehaviour
         rot = (rot - Mathf.Abs(gunAngleLimits.x)) % 360;
 
         float angleDiff = Mathf.Abs(gunPivot.transform.localEulerAngles.z - rot);
-        Debug.Log("angle: " + angleDiff);
+        //Debug.Log("angle: " + angleDiff);
         angleDiff = Mathf.Clamp(angleDiff, 0, 4);
         turretAimSound.volume = Utils.Map(angleDiff, 0, 4, 0, 0.3f);
 
-        Debug.Log(rot + " vs " + gunAngleLimits.x);
+        //Debug.Log(rot + " vs " + gunAngleLimits.x);
         turretAimSound.pitch = Mathf.Lerp(turretAimSound.pitch, Utils.Map(rot, 0, gunAngleLimits.y, 0.3f, 2), 0.3f);
 
         gunPivot.transform.localEulerAngles = new Vector3(0, 0, rot);
