@@ -257,7 +257,6 @@ public class HookController : MonoBehaviour
         {
             grabbedItem = col.gameObject;
             grabbedItem.GetComponent<McGuffinController>().AttachToHook(col);
-            Debug.Log("gotcha!");
             TightenRopeAroundGrabbedItem();
         }
     }
