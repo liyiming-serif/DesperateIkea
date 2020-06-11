@@ -5,13 +5,18 @@ using System.Collections.Generic;
 
 public class HookController : MonoBehaviour
 {
-    public GameObject anchor;
+    //Rope-Ring-Anchor: linked list pointers
+    public GameObject startingAnchor;
+    public GameObject endRing;
+
     public int startingSegments;
-    //public float ropeMaxLength = 10f;
     public float maxDistance = 2f;
-    //public float minVelocity = 0.3f;
+    float tightenedMaxDistance;
     public float retractSpeedSec = .25f;
-    public float retractKickback = 0.3f;
+    public float retractFromRingSpeedSec = 0.02f;
+    public float yankDuration = 0.1f;
+    public float yankForce = 100f;
+    public float quickRetractDistance = 0.2f;
 
     public GameObject ropePrefab;
     public GameObject lastSegment;
@@ -21,8 +26,7 @@ public class HookController : MonoBehaviour
     public List<GameObject> ropeSegments = new List<GameObject>();
 
     public bool retractingHook = false;
-    bool hasFired = false;
-    bool done = false;
+
     // Use this for initialization
     void Start()
     {
@@ -37,24 +41,13 @@ public class HookController : MonoBehaviour
         {
             AppendNode(i);
         }
-        lastSegment.GetComponent<DistanceJoint2D>().connectedBody = anchor.GetComponent<Rigidbody2D>();
+        lastSegment.GetComponent<DistanceJoint2D>().connectedBody = startingAnchor.GetComponent<Rigidbody2D>();
         //StartCoroutine(TrackAngle());
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (gameObject.GetComponent<Rigidbody2D>().velocity.magnitude < minVelocity && hasFired)
-        {
-            done = true;
-        }
-
-        if (Vector2.Distance(anchor.transform.position, lastSegment.transform.position) > maxDistance && !done)
-        {
-            //AppendNode();
-        }
-        */
         DrawLine();
     }
 
@@ -65,12 +58,12 @@ public class HookController : MonoBehaviour
             lr.SetPosition(i, ropeSegments[i].transform.position);
         }
 
-        lr.SetPosition(num_vertices - 1, anchor.transform.position); ;
+        lr.SetPosition(num_vertices - 1, startingAnchor.transform.position); ;
     }
 
     void AppendNode(int idx)
     {
-        Vector2 pos2Create = anchor.transform.position - lastSegment.transform.position;
+        Vector2 pos2Create = startingAnchor.transform.position - lastSegment.transform.position;
         pos2Create.Normalize();
         pos2Create *= maxDistance;
         pos2Create += (Vector2)lastSegment.transform.position;
@@ -89,18 +82,6 @@ public class HookController : MonoBehaviour
         go.name = "Node " + (idx + 1);
         lr.positionCount = (num_vertices);
         ropeSegments.Add(lastSegment);
-
-        //Debug.Log(go.name + " is connected to " + lastSegment.GetComponent<DistanceJoint2D>().connectedBody);
-        Debug.Log("hey: " + idx + ", " + (idx + 1));
-        if (num_vertices == startingSegments + 1)
-        {
-            //Debug.Log("hey");
-            //DistanceJoint2D finalJoint = anchor.GetComponent<DistanceJoint2D>();
-            //finalJoint.enabled = true;
-            //finalJoint.connectedBody = lastSegment.GetComponent<Rigidbody2D>();
-            //finalJoint.distance = maxDistance;
-
-        }
     }
 
     IEnumerator TrackAngle()
@@ -120,11 +101,30 @@ public class HookController : MonoBehaviour
     public IEnumerator RetractHook()
     {
         retractingHook = true;
+        float elapsedTime = 0f;
+        float curRetractSpeed = retractSpeedSec;
+
+        //Yanking from an attached ring. Give it some impulse so it doesn't feel limp
+        HingeJoint2D endJoint = gameObject.GetComponent<HingeJoint2D>();
+        if(endJoint.enabled)
+        {
+            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            gameObject.GetComponent<HingeJoint2D>().enabled = false;
+            Vector2 dir = startingAnchor.transform.position - transform.position;
+            gameObject.GetComponent<Rigidbody2D>().AddForce(dir/dir.magnitude*yankForce, ForceMode2D.Impulse);
+            endRing.layer = LayerMask.NameToLayer("activeAnchor");
+            elapsedTime = yankDuration; 
+            curRetractSpeed = retractFromRingSpeedSec;
+
+            //reactivate the previous anchor
+            startingAnchor.GetComponent<AnchorPoint>().ReactivateAnchor();
+        }
+
         while (num_vertices > 1)
         {
             //update 2nd to last segment
             GameObject secondToLastSegment = ropeSegments[num_vertices-2];
-            secondToLastSegment.GetComponent<DistanceJoint2D>().connectedBody = anchor.GetComponent<Rigidbody2D>();
+            secondToLastSegment.GetComponent<DistanceJoint2D>().connectedBody = startingAnchor.GetComponent<Rigidbody2D>();
 
             //remove rope segment starting from the anchor point
             ropeSegments.Remove(lastSegment);
@@ -135,12 +135,48 @@ public class HookController : MonoBehaviour
             lastSegment = secondToLastSegment;
             if(num_vertices == 1)
             {
-                gameObject.GetComponent<DistanceJoint2D>().distance = retractKickback;
+                gameObject.GetComponent<DistanceJoint2D>().distance = 0;
             }
-            yield return new WaitForSeconds(retractSpeedSec);
+
+            //under the influence of the yank force
+            float dist = Vector2.Distance(startingAnchor.transform.position, transform.position);
+            if (elapsedTime > 0)
+            {
+                curRetractSpeed = retractFromRingSpeedSec;
+                elapsedTime -= curRetractSpeed;
+            }
+            else if (dist <= quickRetractDistance)
+            {
+                curRetractSpeed = retractFromRingSpeedSec;
+            }
+            else
+            {
+                curRetractSpeed = retractSpeedSec;
+            }
+            yield return new WaitForSeconds(curRetractSpeed);
         }
         retractingHook = false;
         Destroy(gameObject);
+    }
+
+    public void TightenRope()
+    {
+        startingAnchor.GetComponent<AnchorPoint>().PassThroughAnchor();
+
+        //attach to end ring
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        HingeJoint2D endJoint = gameObject.GetComponent<HingeJoint2D>();
+        endJoint.enabled = true;
+        endJoint.connectedBody = endRing.GetComponent<Rigidbody2D>();
+
+        //tighten max distance on each rope's distance joint
+        //float dist = Vector2.Distance(endRing.transform.position, anchor.transform.position);
+        tightenedMaxDistance = 0; //dist/(num_vertices);
+
+        for(int i = 0; i < num_vertices-1; i++)
+        {
+            ropeSegments[i].GetComponent<DistanceJoint2D>().distance = tightenedMaxDistance;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -149,13 +185,15 @@ public class HookController : MonoBehaviour
             col.gameObject.layer != LayerMask.NameToLayer("rope") &&
             col.gameObject.layer != LayerMask.NameToLayer("gun"))
         {
-            GameObject sparks = Instantiate(PFXController.Instance().sparks).gameObject;
-            sparks.transform.position = col.contacts[0].point;
+            //GameObject sparks = Instantiate(PFXController.Instance().sparks).gameObject;
+            //sparks.transform.position = col.contacts[0].point;
         }
 
         if (col.gameObject.layer == LayerMask.NameToLayer("activeAnchor") && !retractingHook)
         {
-            
+            endRing = col.gameObject;
+            endRing.GetComponent<RingController>().DisableCollision(gameObject);
+            TightenRope();
         }
     }
 

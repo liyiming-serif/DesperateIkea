@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 277576339}
   - component: {fileID: 5284784724626895558}
   - component: {fileID: -25055258554453392}
+  - component: {fileID: 4371811226528211493}
   m_Layer: 14
   m_Name: Hook
   m_TagString: Untagged
@@ -120,11 +121,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f2b88de5be10d45b51faeddb8b725b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchor: {fileID: 0}
-  startingSegments: 5
-  maxDistance: 2
-  retractSpeedSec: 0.25
-  retractKickback: 0.3
+  startingAnchor: {fileID: 0}
+  endRing: {fileID: 0}
+  startingSegments: 7
+  maxDistance: 1
+  retractSpeedSec: 0.2
+  retractFromRingSpeedSec: 0.02
+  yankDuration: 0.1
+  yankForce: 120
+  quickRetractDistance: 0.5
   ropePrefab: {fileID: 4583273817233070708, guid: 4eefd3e0b92865a4788915284db60846,
     type: 3}
   lastSegment: {fileID: 0}
@@ -359,3 +364,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!233 &4371811226528211493
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2347120418470708407}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 359

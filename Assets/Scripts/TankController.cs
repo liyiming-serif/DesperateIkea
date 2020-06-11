@@ -18,13 +18,9 @@ public class TankController : MonoBehaviour
 
     public GameObject body;
     private Rigidbody2D bodyRb;
-    public GameObject gun;
-    private Rigidbody2D gunRb;
     public Transform gunPivot;
-    public Transform gunHitBox;
     public Vector2 gunAngleLimits;
 
-    public float aimRate = 3;
     public float moveRate = 5;
     public float jumpForce = 10;
 
@@ -76,7 +72,6 @@ public class TankController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space) && canJump)
             {
-                Debug.Log("trying to jump, bruh");
                 bodyRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
         }
@@ -85,6 +80,7 @@ public class TankController : MonoBehaviour
     float getMouseAngle()
     {
         Vector2 temp = Input.mousePosition;
+        temp = Camera.main.ScreenToWorldPoint(temp);
         temp -= (Vector2) gunPivot.transform.position;
         float mouseAngle = Mathf.Atan(temp.y / temp.x);
         #region atan BS
@@ -130,11 +126,9 @@ public class TankController : MonoBehaviour
         rot = (rot - Mathf.Abs(gunAngleLimits.x)) % 360;
 
         float angleDiff = Mathf.Abs(gunPivot.transform.localEulerAngles.z - rot);
-        Debug.Log("angle: " + angleDiff);
         angleDiff = Mathf.Clamp(angleDiff, 0, 4);
         turretAimSound.volume = Utils.Map(angleDiff, 0, 4, 0, 0.3f);
 
-        Debug.Log(rot + " vs " + gunAngleLimits.x);
         turretAimSound.pitch = Mathf.Lerp(turretAimSound.pitch, Utils.Map(rot, 0, gunAngleLimits.y, 0.3f, 2), 0.3f);
 
         gunPivot.transform.localEulerAngles = new Vector3(0, 0, rot);

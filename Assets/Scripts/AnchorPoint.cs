@@ -10,17 +10,13 @@ using System.Collections;
 public class AnchorPoint : MonoBehaviour
 {
     public GameObject hookPrefab;
-    public bool rope_active;
 
+    //Rope-Ring-Anchor: linked list pointers
     GameObject curHook;
-    public GameObject prevAnchor;
-    public GameObject hitbox;
+    GameObject prevHook;
+    public GameObject parentRing;
 
-    //EMPTY: anchor has no rope through it; hooks can be attached
-    //PASSED: hook has already passed through this point
-    //CURRENT: anchor that the player is aiming and firing with
-    public enum AnchorState { EMPTY, PASSED, CURRENT }
-    public AnchorState currAnchorState = AnchorState.EMPTY;
+    public bool isAnchorActive;
 
     AudioSource src;
     GameObject loadedHook;
@@ -34,22 +30,19 @@ public class AnchorPoint : MonoBehaviour
         src = GetComponent<AudioSource>();
 
         loadedHook = transform.Find("LoadedHook").gameObject;
-
-        if (currAnchorState==AnchorState.CURRENT)
-        {
-            hitbox.layer = LayerMask.NameToLayer("takenAnchor");
-        }
-        else
-        {
-            hitbox.layer = LayerMask.NameToLayer("activeAnchor");
-        }
     }
 
     // Update is called once per frame
     void Update()
     {   
+        if (!isAnchorActive)
+        {
+            loadedHook.SetActive(false);
+            return;
+        }
+
         //Left click to fire hook
-        if (Input.GetMouseButtonDown(0)) //&& currAnchorState==AnchorState.CURRENT)
+        if (Input.GetMouseButtonDown(0))
         {
             if(curHook == null)
             {
@@ -65,24 +58,32 @@ public class AnchorPoint : MonoBehaviour
                 pew.gameObject.SetActive(true);
                 pew.Play();
 
-                curHook.GetComponent<HookController>().anchor = gameObject;
+                curHook.GetComponent<HookController>().startingAnchor = gameObject;
             }
         }
 
         //Right click to retract hook
-        if (Input.GetMouseButtonDown(1))// && currAnchorState==AnchorState.CURRENT)
+        if (Input.GetMouseButtonDown(1))
         {
             if(curHook != null)
             {   
+                //retract hook to current anchor
                 HookController hookController = curHook.GetComponent<HookController>();
                 if (!hookController.retractingHook)
                 {
                     hookController.StartCoroutine(hookController.RetractHook());
                 }
             }
+            else if (prevHook != null)
+            {
+                //retract hook back to last anchor
+                HookController hookController = prevHook.GetComponent<HookController>();
+                DeactivateAnchor();
+                hookController.StartCoroutine(hookController.RetractHook());
+            }
         }
 
-        if(curHook == null)
+        if(curHook==null)
         {
             loadedHook.SetActive(true);
         }
@@ -92,5 +93,29 @@ public class AnchorPoint : MonoBehaviour
         }
     }
 
+    public void ActivateAnchor(GameObject lastHook)
+    {
+        isAnchorActive = true;
+        prevHook = lastHook;
+    }
 
+    public void ReactivateAnchor()
+    {
+        isAnchorActive = true;
+    }
+
+    public void PassThroughAnchor()
+    {
+        isAnchorActive = false;
+    }
+
+    void DeactivateAnchor()
+    {
+        isAnchorActive = false;
+        if(parentRing != null)
+        {
+            parentRing.GetComponent<RingController>().EnableCollision();
+        }
+        
+    }
 }
