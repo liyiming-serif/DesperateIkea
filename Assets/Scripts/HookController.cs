@@ -8,6 +8,7 @@ public class HookController : MonoBehaviour
     //Rope-Ring-Anchor: linked list pointers
     public GameObject startingAnchor;
     public GameObject endRing;
+    public GameObject grabbedItem;
 
     public int startingSegments;
     public float maxDistance = 2f;
@@ -17,6 +18,7 @@ public class HookController : MonoBehaviour
     public float yankDuration = 0.1f;
     public float yankForce = 100f;
     public float quickRetractDistance = 0.2f;
+    float elapsedTime = 0f;
 
     public GameObject ropePrefab;
     public GameObject lastSegment;
@@ -101,28 +103,38 @@ public class HookController : MonoBehaviour
     public IEnumerator RetractHook()
     {
         retractingHook = true;
-        float elapsedTime = 0f;
+        elapsedTime = 0f;
         float curRetractSpeed = retractSpeedSec;
 
-        SoundManager.Instance().cableRetract.Play();
 
+        SoundManager.Instance().cableRetract.Play();
+        
         //Yanking from an attached ring. Give it some impulse so it doesn't feel limp
         HingeJoint2D endJoint = gameObject.GetComponent<HingeJoint2D>();
         if(endJoint.enabled)
         {
+            //Yanking from an attached ring. Give it some impulse so it doesn't feel limp
             gameObject.GetComponent<SpriteRenderer>().enabled = true;
             gameObject.GetComponent<HingeJoint2D>().enabled = false;
-            Vector2 dir = startingAnchor.transform.position - transform.position;
-            gameObject.GetComponent<Rigidbody2D>().AddForce(dir/dir.magnitude*yankForce, ForceMode2D.Impulse);
-            endRing.layer = LayerMask.NameToLayer("activeAnchor");
-            elapsedTime = yankDuration; 
+            YankHook();
+            //endRing.layer = LayerMask.NameToLayer("activeAnchor");
             curRetractSpeed = retractFromRingSpeedSec;
 
             //reactivate the previous anchor
             startingAnchor.GetComponent<AnchorPoint>().ReactivateAnchor();
         }
+        else if(grabbedItem != null)
+        {
+            //Yanking a grabbed item. Give it some impulse and disable the item's kinematics
+            YankHook();
+            curRetractSpeed = retractFromRingSpeedSec;
+            grabbedItem.GetComponent<Rigidbody2D>().isKinematic = false;
+
+            //reactivate the previous anchor
+            startingAnchor.GetComponent<AnchorPoint>().ReactivateAnchor();
+        }
+
         SoundManager.Instance().cableRetractLOOP.Play();
-        
         while (num_vertices > 1)
         {
             //update 2nd to last segment
@@ -141,7 +153,7 @@ public class HookController : MonoBehaviour
                 gameObject.GetComponent<DistanceJoint2D>().distance = 0;
             }
 
-            //under the influence of the yank force
+            //retract the rope faster if it's being yanked
             float dist = Vector2.Distance(startingAnchor.transform.position, transform.position);
             if (elapsedTime > 0)
             {
@@ -156,13 +168,22 @@ public class HookController : MonoBehaviour
             {
                 curRetractSpeed = retractSpeedSec;
             }
+
             yield return new WaitForSeconds(curRetractSpeed);
         }
         SoundManager.Instance().cableRetractLOOP.Stop();
         retractingHook = false;
+
+        //Retraction finished: pass on grabbed item to anchor
+        if (grabbedItem != null)
+        {
+            startingAnchor.GetComponent<AnchorPoint>().grabbedItem = grabbedItem;
+            grabbedItem.GetComponent<McGuffinController>().TransferMcGuffin(startingAnchor.GetComponent<Rigidbody2D>());
+        }
         Destroy(gameObject);
     }
 
+    //Tighten rope around a connected ring
     public void TightenRope()
     {
         startingAnchor.GetComponent<AnchorPoint>().PassThroughAnchor();
@@ -183,6 +204,34 @@ public class HookController : MonoBehaviour
         }
     }
 
+    //Tighten rope around the McGuffin
+    public void TightenRopeAroundGrabbedItem()
+    {
+        tightenedMaxDistance = 0;
+        for(int i = 0; i < num_vertices-1; i++)
+        {
+            ropeSegments[i].GetComponent<DistanceJoint2D>().distance = tightenedMaxDistance;
+        }
+
+        YankHook();
+    }
+
+    void YankHook()
+    {
+        if (!retractingHook)
+        {
+            return;
+        }
+
+        if(grabbedItem != null)
+        {
+            grabbedItem.GetComponent<Rigidbody2D>().isKinematic = false;
+        }
+        Vector2 dir = startingAnchor.transform.position - transform.position;
+        gameObject.GetComponent<Rigidbody2D>().AddForce(dir/dir.magnitude*yankForce, ForceMode2D.Impulse);
+        elapsedTime = yankDuration; 
+    }
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (
@@ -195,12 +244,21 @@ public class HookController : MonoBehaviour
             //sparks.transform.position = col.contacts[0].point;
         }
 
-
+        // Latch on to a ring
         if (col.gameObject.layer == LayerMask.NameToLayer("activeAnchor") && !retractingHook)
         {
             endRing = col.gameObject;
             endRing.GetComponent<RingController>().DisableCollision(gameObject);
             TightenRope();
+        }
+
+        // Grabbed the McGuffin
+        if (col.gameObject.layer == LayerMask.NameToLayer("grabbable") && grabbedItem == null)
+        {
+            grabbedItem = col.gameObject;
+            grabbedItem.GetComponent<McGuffinController>().AttachToHook(col);
+            Debug.Log("gotcha!");
+            TightenRopeAroundGrabbedItem();
         }
     }
 
