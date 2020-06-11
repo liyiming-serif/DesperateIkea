@@ -21,7 +21,7 @@ public class McGuffinController : MonoBehaviour
     public void AttachToHook(Collision2D col)
     {
         // First time attached to hook
-        Debug.Log("gotcha!");
+        gameObject.layer = LayerMask.NameToLayer("grabbed");
         gameObject.GetComponent<HingeJoint2D>().enabled = true;
         hookPoint = gameObject.GetComponent<HingeJoint2D>();
         hookPoint.connectedBody = col.otherRigidbody;
