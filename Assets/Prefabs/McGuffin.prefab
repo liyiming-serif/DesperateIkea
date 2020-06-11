@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 2869408714701969108}
   - component: {fileID: 2869408714701969109}
   - component: {fileID: 2869408714701969111}
+  - component: {fileID: 3781350031377634998}
+  - component: {fileID: 8928769586956614685}
   m_Layer: 17
   m_Name: McGuffin
   m_TagString: Untagged
@@ -123,8 +125,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 10
+  m_UseAutoMass: 1
+  m_Mass: 1.1270434
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -167,5 +169,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ee55aa06595bd4448867a406233e56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &3781350031377634998
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869408714701969105}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
+--- !u!114 &8928769586956614685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869408714701969105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe0a4f7f0481b54d8c95928e74aa186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

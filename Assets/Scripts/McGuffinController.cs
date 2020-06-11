@@ -9,7 +9,9 @@ public class McGuffinController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
+        GetComponent<Rigidbody2D>().freezeRotation = false;
     }
 
     // Update is called once per frame
@@ -25,6 +27,8 @@ public class McGuffinController : MonoBehaviour
         gameObject.GetComponent<HingeJoint2D>().enabled = true;
         hookPoint = gameObject.GetComponent<HingeJoint2D>();
         hookPoint.connectedBody = col.otherRigidbody;
+
+        SoundManager.Instance().mcguffinTrigger.Play();
         //hookPoint.anchor =  transform.InverseTransformPoint(col.GetContact(0).point);
     }
 
@@ -40,6 +44,18 @@ public class McGuffinController : MonoBehaviour
         {
             Debug.Log("You're winner!");
             col.collider.enabled = false;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.layer == LayerMask.NameToLayer("player"))
+        {
+            Debug.Log("You're winner!");
+
+            GetComponent<Rigidbody2D>().freezeRotation = true;
+            GameManager.Instance().Win(transform);
+            //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         }
     }
 }

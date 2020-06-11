@@ -42,7 +42,7 @@ public class Ball : MonoBehaviour
                 }
             }
 
-            GameManager.Instance().EndGame(transform.position.x);
+            //GameManager.Instance().EndGame(transform.position.x);
             Destroy(gameObject);
         }
     }

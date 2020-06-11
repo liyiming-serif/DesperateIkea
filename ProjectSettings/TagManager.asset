@@ -41,9 +41,6 @@ TagManager:
   - name: physics
     uniqueID: 1075108917
     locked: 0
-  - name: UI
-    uniqueID: 630802431
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
@@ -55,4 +52,7 @@ TagManager:
     locked: 0
   - name: grass
     uniqueID: 2020364743
+    locked: 0
+  - name: UI
+    uniqueID: 630802431
     locked: 0

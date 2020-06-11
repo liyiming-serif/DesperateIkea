@@ -70,4 +70,9 @@ public class McGuffinGenerator : MonoBehaviour
 
         return mcguffy;
     }
+
+    public string GetMcGuffinName()
+    {
+        return McGuffinName;
+    }
 }

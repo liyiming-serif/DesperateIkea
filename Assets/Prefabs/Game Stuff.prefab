@@ -42,7 +42,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0f0729d83e0cc3c49b3c4e2d4fe33233, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.232
   m_Pitch: 1
   Loop: 0
@@ -168,8 +168,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 38e3565e19ec7274396dd5fa0bbef8fe, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 63a35a90640bd7f43b6791946d2a346b, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 0.305
   m_Pitch: 1
   Loop: 0
@@ -295,8 +295,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 38e3565e19ec7274396dd5fa0bbef8fe, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: a4156c37a888b1e44adf540feb16783f, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 0.305
   m_Pitch: 1
   Loop: 0
@@ -423,8 +423,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 38e3565e19ec7274396dd5fa0bbef8fe, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.305
+  m_PlayOnAwake: 0
+  m_Volume: 0.752
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -550,7 +550,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5bc44ece994c0904ab98022507bcf017, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.187
   m_Pitch: 1
   Loop: 0
@@ -677,7 +677,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 76b3368e4b55f14468359862190bbe7f, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.229
   m_Pitch: 1
   Loop: 0
@@ -803,9 +803,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 38e3565e19ec7274396dd5fa0bbef8fe, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.305
+  m_audioClip: {fileID: 8300000, guid: 7616e05b1c8eedf448428c1bf6573b01, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.854
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1318,7 +1318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 0}
-  net: {fileID: 0}
+  itemText: {fileID: 0}
 --- !u!114 &2924635423354542708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1336,7 +1336,7 @@ MonoBehaviour:
   cableRetractLOOP: {fileID: 1509636417}
   cableSnap: {fileID: 1573745564}
   ringTrigger: {fileID: 1153495482}
-  mcguffingTrigger: {fileID: 1646554124}
+  mcguffinTrigger: {fileID: 1646554124}
   mcguffinRetrieve: {fileID: 1056222113}
   mcguffinOpen: {fileID: 1011472583}
 --- !u!1 &2924635423421279842

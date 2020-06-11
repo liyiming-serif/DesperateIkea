@@ -9777,10 +9777,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hookPrefab: {fileID: 2347120418470708407, guid: 01948a61761821b46b071fabb1b1ca31,
     type: 3}
-  rope_active: 0
-  prevAnchor: {fileID: 0}
-  hitbox: {fileID: 0}
-  currAnchorState: 0
+  parentRing: {fileID: 0}
+  grabbedItem: {fileID: 0}
+  isAnchorActive: 0
   poof: {fileID: 6701549500294116742}
   pew: {fileID: 9189074977749026963}
 --- !u!232 &6701549500437475564
@@ -9814,7 +9813,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7dfe9d3cb0254ad49ab966d0813418c5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.305
+  m_Volume: 0.788
   m_Pitch: 1
   Loop: 0
   Mute: 0

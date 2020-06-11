@@ -13,7 +13,7 @@ public class SoundManager : MonoBehaviour {
     //public AudioSource
 
     public List<SoundItem> soundItems = new List<SoundItem>();
-    public AudioSource cableRetract, cableRetractLOOP, cableSnap, ringTrigger, mcguffingTrigger, mcguffinRetrieve, mcguffinOpen;
+    public AudioSource cableRetract, cableRetractLOOP, cableSnap, ringTrigger, mcguffinTrigger, mcguffinRetrieve, mcguffinOpen;
     private void Awake()
     {
         if (!_instance)
