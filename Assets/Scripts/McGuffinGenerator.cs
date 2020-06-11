@@ -33,19 +33,19 @@ public class McGuffinGenerator : MonoBehaviour
     void Start()
     {
         McGuffinName = GenerateMcGuffinName();
-        Debug.Log(ADJECTIVES.Length);
-        Debug.Log("Try to get the " + McGuffinName);
+        //Debug.Log(ADJECTIVES.Length);
+        //Debug.Log("Try to get the " + McGuffinName);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            McGuffinName = GenerateMcGuffinName();
+        //if (Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    McGuffinName = GenerateMcGuffinName();
 
-            Debug.Log("Try to get the " + McGuffinName);
-        }
+        //    Debug.Log("Try to get the " + McGuffinName);
+        //}
     }
 
     string GenerateMcGuffinName()
