@@ -25,7 +25,7 @@ public class McGuffinController : MonoBehaviour
         gameObject.GetComponent<HingeJoint2D>().enabled = true;
         hookPoint = gameObject.GetComponent<HingeJoint2D>();
         hookPoint.connectedBody = col.otherRigidbody;
-        hookPoint.anchor =  transform.InverseTransformPoint(col.GetContact(0).point);
+        //hookPoint.anchor =  transform.InverseTransformPoint(col.GetContact(0).point);
     }
 
     public void TransferMcGuffin(Rigidbody2D rb)
@@ -36,7 +36,7 @@ public class McGuffinController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if(col.gameObject.layer != LayerMask.NameToLayer("player"))
+        if(col.gameObject.layer == LayerMask.NameToLayer("player"))
         {
             Debug.Log("You're winner!");
             col.collider.enabled = false;
