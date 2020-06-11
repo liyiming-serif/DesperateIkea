@@ -104,6 +104,8 @@ public class HookController : MonoBehaviour
         float elapsedTime = 0f;
         float curRetractSpeed = retractSpeedSec;
 
+        SoundManager.Instance().cableRetract.Play();
+
         //Yanking from an attached ring. Give it some impulse so it doesn't feel limp
         HingeJoint2D endJoint = gameObject.GetComponent<HingeJoint2D>();
         if(endJoint.enabled)
@@ -119,7 +121,8 @@ public class HookController : MonoBehaviour
             //reactivate the previous anchor
             startingAnchor.GetComponent<AnchorPoint>().ReactivateAnchor();
         }
-
+        SoundManager.Instance().cableRetractLOOP.Play();
+        
         while (num_vertices > 1)
         {
             //update 2nd to last segment
@@ -155,6 +158,7 @@ public class HookController : MonoBehaviour
             }
             yield return new WaitForSeconds(curRetractSpeed);
         }
+        SoundManager.Instance().cableRetractLOOP.Stop();
         retractingHook = false;
         Destroy(gameObject);
     }

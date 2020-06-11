@@ -30,6 +30,12 @@ public class AnchorPoint : MonoBehaviour
         src = GetComponent<AudioSource>();
 
         loadedHook = transform.Find("LoadedHook").gameObject;
+
+        poof.gameObject.SetActive(false);
+        poof.Play();
+
+        pew.gameObject.SetActive(false);
+        pew.Play();
     }
 
     // Update is called once per frame
@@ -97,6 +103,8 @@ public class AnchorPoint : MonoBehaviour
     {
         isAnchorActive = true;
         prevHook = lastHook;
+
+        SoundManager.Instance().ringTrigger.Play();
     }
 
     public void ReactivateAnchor()
