@@ -181,13 +181,16 @@ public class HookController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.layer != LayerMask.NameToLayer("player") &&
+        if (
+            col.gameObject.layer != LayerMask.NameToLayer("player") &&
             col.gameObject.layer != LayerMask.NameToLayer("rope") &&
-            col.gameObject.layer != LayerMask.NameToLayer("gun"))
+            col.gameObject.layer != LayerMask.NameToLayer("gun")
+            )
         {
             //GameObject sparks = Instantiate(PFXController.Instance().sparks).gameObject;
             //sparks.transform.position = col.contacts[0].point;
         }
+
 
         if (col.gameObject.layer == LayerMask.NameToLayer("activeAnchor") && !retractingHook)
         {
