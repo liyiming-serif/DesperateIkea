@@ -20,12 +20,13 @@ public class McGuffinGenerator : MonoBehaviour
         "skull", "bone", "seat", "toy", "board", "box", "keychain", "diamond", "jacket", "bag", "swatter", "picker-upper", "detector", "purse", "brush", "magazine", "sword", "underwear", "sack", "carriage", "alarm", "smacker", "scooper"
     };
     string[] POST_MODIFIERS = {
-        "filled with"
+        "filled with", "for", "from"
     };
 
     string[] SMALL_OBJECTS = {
         "seeds", "ribbons", "sparkles", "dogs", "babies", "gum", "Adam's apples",  "oranges", "coins", "wood chips", "sea urchins",  "mushrooms", "toothpaste", "glue"
     };
+
 
     string McGuffinName = "";
     // Start is called before the first frame update
@@ -54,21 +55,63 @@ public class McGuffinGenerator : MonoBehaviour
         roll = Random.Range(0, 10);
         if (Random.Range(0, 10) >= 5)
         {
-            mcguffy += ADVERBS[Random.Range(0, ADVERBS.Length - 1)] + " ";
+            mcguffy += getRandomFromArray(ADVERBS) + " ";
         }
-        mcguffy += ADJECTIVES[Random.Range(0, ADJECTIVES.Length - 1)] + " ";
+        mcguffy += getRandomFromArray(ADJECTIVES) + " ";
         if (Random.Range(0, 10) >= 3)
         {
-            mcguffy += MODIFIERS[Random.Range(0, MODIFIERS.Length - 1)] + " ";
+            mcguffy += getRandomFromArray(MODIFIERS) + " ";
         }
-        mcguffy += NOUNS[Random.Range(0, NOUNS.Length - 1)];
+        mcguffy += getRandomFromArray(NOUNS);
 
         if (mcguffy.Contains(" of ") && !mcguffy.Contains("kind of"))
         {
             mcguffy += "s";
         }
 
+        if(Random.Range(0, 10) >= 7)
+        {
+            roll = Random.Range(0, 10);
+            string postModifier;
+            if(roll >= 6)
+            {
+                postModifier = POST_MODIFIERS[0];
+            } else if(roll >= 2 && roll < 6)
+            {
+                postModifier = POST_MODIFIERS[1];
+            } else
+            {
+                postModifier = POST_MODIFIERS[2];
+            }
+
+
+            if(postModifier.Equals("from"))
+            {
+                postModifier += " ";
+                roll = Random.Range(0, 10);
+                if (roll >= 6)
+                {
+                    postModifier += "the " + Random.Range(0, 195) * 10 + "'s";
+                } else if(roll >= 2 && roll < 6)
+                {
+                    postModifier += Random.Range(0, 300) * 10 + " B.C.";
+                } else {
+                    postModifier += (Random.Range(0.3f, 150f)).ToString("##.#") + " million years ago";
+                }
+            } else
+            {
+                postModifier += " " + getRandomFromArray(SMALL_OBJECTS);
+            }
+            mcguffy += " " + postModifier;
+        }
+
+
         return mcguffy;
+    }
+
+    string getRandomFromArray(string[] arr)
+    {
+        return arr[Random.Range(0, arr.Length)];
     }
 
     public string GetMcGuffinName()

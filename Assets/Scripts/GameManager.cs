@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(tick * (1f - (1f * idx / targetText.Length)));
         }
 
-        if (Random.Range(0, 10) > 5)
+        if (Random.Range(0, 10) > 8)
         {
             while (Time.fixedTime - startTime < animTime)
             {
