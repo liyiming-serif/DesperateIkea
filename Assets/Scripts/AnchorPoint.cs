@@ -15,6 +15,7 @@ public class AnchorPoint : MonoBehaviour
     GameObject curHook;
     GameObject prevHook;
     public GameObject parentRing;
+    public GameObject grabbedItem;
 
     public bool isAnchorActive;
 
@@ -79,6 +80,13 @@ public class AnchorPoint : MonoBehaviour
                 //retract hook back to last anchor
                 HookController hookController = prevHook.GetComponent<HookController>();
                 DeactivateAnchor();
+
+                //pass along grabbed item
+                if(grabbedItem != null)
+                {
+                    prevHook.GetComponent<HookController>().grabbedItem = grabbedItem;
+                    grabbedItem.GetComponent<McGuffinController>().TransferMcGuffin(prevHook.GetComponent<Rigidbody2D>());
+                }
                 hookController.StartCoroutine(hookController.RetractHook());
             }
         }
