@@ -2,22 +2,22 @@
 using System.Collections;
 
 /*
- * Defines behaviour for any object a hook can be attached to and fired from.
+ * Defines behaviour for any object a hook can be fired from.
  * Hook's transform and fire angle is controlled by this obj.
  * Requires: AudioSource
  */
 
-public class AnchorPoint : MonoBehaviour
+public class HookLauncherController : MonoBehaviour
 {
     public GameObject hookPrefab;
 
-    //Rope-Ring-Anchor: linked list pointers
+    //Hook-Ring-Laucher: linked list pointers
     GameObject curHook;
     GameObject prevHook;
     public GameObject parentRing;
     public GameObject grabbedItem;
 
-    public bool isAnchorActive;
+    public bool isHookLauncherActive;
 
     AudioSource src;
     GameObject loadedHook;
@@ -42,7 +42,7 @@ public class AnchorPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (!isAnchorActive)
+        if (!isHookLauncherActive)
         {
             loadedHook.SetActive(false);
             return;
@@ -65,7 +65,7 @@ public class AnchorPoint : MonoBehaviour
                 pew.gameObject.SetActive(true);
                 pew.Play();
 
-                curHook.GetComponent<HookController>().startingAnchor = gameObject;
+                curHook.GetComponent<HookController>().startingHookLauncher = gameObject;
             }
         }
 
@@ -74,7 +74,7 @@ public class AnchorPoint : MonoBehaviour
         {
             if(curHook != null)
             {   
-                //retract hook to current anchor
+                //retract hook to current launcher
                 HookController hookController = curHook.GetComponent<HookController>();
                 if (!hookController.retractingHook)
                 {
@@ -83,9 +83,9 @@ public class AnchorPoint : MonoBehaviour
             }
             else if (prevHook != null)
             {
-                //retract hook back to last anchor
+                //retract hook back to last launcher
                 HookController hookController = prevHook.GetComponent<HookController>();
-                DeactivateAnchor();
+                DeactivateHookLauncher();
 
                 //pass along grabbed item
                 if(grabbedItem != null)
@@ -107,27 +107,27 @@ public class AnchorPoint : MonoBehaviour
         }
     }
 
-    public void ActivateAnchor(GameObject lastHook)
+    public void ActivateHookLauncher(GameObject lastHook)
     {
-        isAnchorActive = true;
+        isHookLauncherActive = true;
         prevHook = lastHook;
 
         SoundManager.Instance().ringTrigger.Play();
     }
 
-    public void ReactivateAnchor()
+    public void ReactivateHookLauncher()
     {
-        isAnchorActive = true;
+        isHookLauncherActive = true;
     }
 
-    public void PassThroughAnchor()
+    public void PassThroughHookLauncher()
     {
-        isAnchorActive = false;
+        isHookLauncherActive = false;
     }
 
-    void DeactivateAnchor()
+    void DeactivateHookLauncher()
     {
-        isAnchorActive = false;
+        isHookLauncherActive = false;
         if(parentRing != null)
         {
             parentRing.GetComponent<RingController>().EnableCollision();

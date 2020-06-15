@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Provides hitbox for launched hooks to attach to
+ * Requires: HookLauncher prefab as child
+ */
+
 public class RingController : MonoBehaviour
 {
-    //Rope-Ring-Anchor: linked list pointers
-    GameObject anchorChild;
+    //Rope-Ring-Launcher: linked list pointers
+    GameObject hookLauncherChild;
 
     public float rotSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-        anchorChild = transform.Find("Anchor").gameObject;
-        
-        anchorChild.GetComponent<AnchorPoint>().parentRing = gameObject;
+        hookLauncherChild = transform.Find("HookLauncher").gameObject;
+        hookLauncherChild.GetComponent<HookLauncherController>().parentRing = gameObject;
+
+        EnableCollision();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(anchorChild.GetComponent<AnchorPoint>().isAnchorActive)
+        if(hookLauncherChild.GetComponent<HookLauncherController>().isHookLauncherActive)
         {
             rotateTowardsMouse();
         }
@@ -28,18 +34,18 @@ public class RingController : MonoBehaviour
 
     public void DisableCollision(GameObject lastHook)
     {
-        gameObject.layer = LayerMask.NameToLayer("takenAnchor");
-        anchorChild.GetComponent<AnchorPoint>().ActivateAnchor(lastHook);
+        gameObject.layer = LayerMask.NameToLayer("takenRing");
+        hookLauncherChild.GetComponent<HookLauncherController>().ActivateHookLauncher(lastHook);
     }
 
     public void EnableCollision()
     {
-        gameObject.layer = LayerMask.NameToLayer("activeAnchor");
+        gameObject.layer = LayerMask.NameToLayer("activeRing");
     }
 
     void rotateTowardsMouse()
     {
-        anchorChild.transform.right = getMouseAngle();
+        hookLauncherChild.transform.right = getMouseAngle();
     }
 
     Vector2 getMouseAngle()
@@ -48,8 +54,8 @@ public class RingController : MonoBehaviour
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         
         Vector2 pointDirection = new Vector2(
-            mousePosition.x-anchorChild.transform.position.x,
-            mousePosition.y-anchorChild.transform.position.y);
+            mousePosition.x-hookLauncherChild.transform.position.x,
+            mousePosition.y-hookLauncherChild.transform.position.y);
         pointDirection /= pointDirection.magnitude;
 
         return pointDirection;

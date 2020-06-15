@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
         itemText.gameObject.SetActive(false);
         StartCoroutine("CountDown");
 
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("rope"), LayerMask.NameToLayer("grabbed"));
+
         gameOver = false;
     }
 

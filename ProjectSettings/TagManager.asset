@@ -20,8 +20,8 @@ TagManager:
   - terrain
   - water
   - rope
-  - activeAnchor
-  - takenAnchor
+  - activeRing
+  - takenRing
   - grabbable
   - grabbed
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: sky
+    uniqueID: 3407830525
+    locked: 0
   - name: physics
     uniqueID: 1075108917
     locked: 0
@@ -47,11 +50,11 @@ TagManager:
   - name: player
     uniqueID: 409193589
     locked: 0
-  - name: water
-    uniqueID: 4238279855
-    locked: 0
   - name: grass
     uniqueID: 2020364743
+    locked: 0
+  - name: water
+    uniqueID: 4238279855
     locked: 0
   - name: UI
     uniqueID: 630802431

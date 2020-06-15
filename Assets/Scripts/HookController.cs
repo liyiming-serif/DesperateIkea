@@ -2,11 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+ * The actual hook+rope
+ * Requires: LineRenderer, DistanceJoint2D, HingeJoint2D, Rigidbody2D, SpriteRenderer
+ */
 
 public class HookController : MonoBehaviour
 {
-    //Rope-Ring-Anchor: linked list pointers
-    public GameObject startingAnchor;
+    //Hook-Ring-Launcher: linked list pointers
+    public GameObject startingHookLauncher;
     public GameObject endRing;
     public GameObject grabbedItem;
 
@@ -34,16 +38,14 @@ public class HookController : MonoBehaviour
     {
         lr = GetComponent<LineRenderer>();
         lastSegment = transform.gameObject;
-        //lastSegment.GetComponent<DistanceJoint2D>().connectedBody = anchor.GetComponent<Rigidbody2D>();
         ropeSegments.Add(lastSegment);
         num_vertices++;
 
-        //AppendNode();
         for (int i = 0; i < startingSegments; i++)
         {
             AppendNode(i);
         }
-        lastSegment.GetComponent<DistanceJoint2D>().connectedBody = startingAnchor.GetComponent<Rigidbody2D>();
+        lastSegment.GetComponent<DistanceJoint2D>().connectedBody = startingHookLauncher.GetComponent<Rigidbody2D>();
         //StartCoroutine(TrackAngle());
     }
 
@@ -60,17 +62,17 @@ public class HookController : MonoBehaviour
             lr.SetPosition(i, ropeSegments[i].transform.position);
         }
 
-        lr.SetPosition(num_vertices - 1, startingAnchor.transform.position); ;
+        lr.SetPosition(num_vertices - 1, startingHookLauncher.transform.position); ;
     }
 
     void AppendNode(int idx)
     {
-        Vector2 pos2Create = startingAnchor.transform.position - lastSegment.transform.position;
+        Vector2 pos2Create = startingHookLauncher.transform.position - lastSegment.transform.position;
         pos2Create.Normalize();
         pos2Create *= maxDistance;
         pos2Create += (Vector2)lastSegment.transform.position;
 
-        //create new rope segment from the anchor point
+        //create new rope segment at the starting point
         GameObject go = (GameObject)Instantiate(ropePrefab, pos2Create, Quaternion.identity);
 
         go.transform.SetParent(transform);
@@ -117,21 +119,19 @@ public class HookController : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().enabled = true;
             gameObject.GetComponent<HingeJoint2D>().enabled = false;
             YankHook();
-            //endRing.layer = LayerMask.NameToLayer("activeAnchor");
             curRetractSpeed = retractFromRingSpeedSec;
 
-            //reactivate the previous anchor
-            startingAnchor.GetComponent<AnchorPoint>().ReactivateAnchor();
+            //reactivate the previous hook launcher
+            startingHookLauncher.GetComponent<HookLauncherController>().ReactivateHookLauncher();
         }
         else if(grabbedItem != null)
         {
             //Yanking a grabbed item. Give it some impulse and disable the item's kinematics
             YankHook();
             curRetractSpeed = retractFromRingSpeedSec;
-            grabbedItem.GetComponent<Rigidbody2D>().isKinematic = false;
 
-            //reactivate the previous anchor
-            startingAnchor.GetComponent<AnchorPoint>().ReactivateAnchor();
+            //reactivate the previous hook launcher
+            startingHookLauncher.GetComponent<HookLauncherController>().ReactivateHookLauncher();
         }
 
         SoundManager.Instance().cableRetractLOOP.Play();
@@ -139,9 +139,9 @@ public class HookController : MonoBehaviour
         {
             //update 2nd to last segment
             GameObject secondToLastSegment = ropeSegments[num_vertices-2];
-            secondToLastSegment.GetComponent<DistanceJoint2D>().connectedBody = startingAnchor.GetComponent<Rigidbody2D>();
+            secondToLastSegment.GetComponent<DistanceJoint2D>().connectedBody = startingHookLauncher.GetComponent<Rigidbody2D>();
 
-            //remove rope segment starting from the anchor point
+            //remove rope segment starting from the previous hook launcher
             ropeSegments.Remove(lastSegment);
             num_vertices--;
             lr.positionCount = (num_vertices);
@@ -154,7 +154,7 @@ public class HookController : MonoBehaviour
             }
 
             //retract the rope faster if it's being yanked
-            float dist = Vector2.Distance(startingAnchor.transform.position, transform.position);
+            float dist = Vector2.Distance(startingHookLauncher.transform.position, transform.position);
             if (elapsedTime > 0)
             {
                 curRetractSpeed = retractFromRingSpeedSec;
@@ -174,11 +174,11 @@ public class HookController : MonoBehaviour
         SoundManager.Instance().cableRetractLOOP.Stop();
         retractingHook = false;
 
-        //Retraction finished: pass on grabbed item to anchor
+        //Retraction finished: pass on grabbed item to hook launcher
         if (grabbedItem != null)
         {
-            startingAnchor.GetComponent<AnchorPoint>().grabbedItem = grabbedItem;
-            grabbedItem.GetComponent<McGuffinController>().TransferMcGuffin(startingAnchor.GetComponent<Rigidbody2D>());
+            startingHookLauncher.GetComponent<HookLauncherController>().grabbedItem = grabbedItem;
+            grabbedItem.GetComponent<McGuffinController>().TransferMcGuffin(startingHookLauncher.GetComponent<Rigidbody2D>());
         }
         Destroy(gameObject);
     }
@@ -186,7 +186,7 @@ public class HookController : MonoBehaviour
     //Tighten rope around a connected ring
     public void TightenRope()
     {
-        startingAnchor.GetComponent<AnchorPoint>().PassThroughAnchor();
+        startingHookLauncher.GetComponent<HookLauncherController>().PassThroughHookLauncher();
 
         //attach to end ring
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
@@ -195,7 +195,6 @@ public class HookController : MonoBehaviour
         endJoint.connectedBody = endRing.GetComponent<Rigidbody2D>();
 
         //tighten max distance on each rope's distance joint
-        //float dist = Vector2.Distance(endRing.transform.position, anchor.transform.position);
         tightenedMaxDistance = 0; //dist/(num_vertices);
 
         for(int i = 0; i < num_vertices-1; i++)
@@ -225,9 +224,9 @@ public class HookController : MonoBehaviour
 
         if(grabbedItem != null)
         {
-            grabbedItem.GetComponent<Rigidbody2D>().isKinematic = false;
+            grabbedItem.GetComponent<McGuffinController>().YankedByHook();
         }
-        Vector2 dir = startingAnchor.transform.position - transform.position;
+        Vector2 dir = startingHookLauncher.transform.position - transform.position;
         gameObject.GetComponent<Rigidbody2D>().AddForce(dir/dir.magnitude*yankForce, ForceMode2D.Impulse);
         elapsedTime = yankDuration; 
     }
@@ -245,7 +244,7 @@ public class HookController : MonoBehaviour
         }
 
         // Latch on to a ring
-        if (col.gameObject.layer == LayerMask.NameToLayer("activeAnchor") && !retractingHook)
+        if (col.gameObject.layer == LayerMask.NameToLayer("activeRing") && !retractingHook)
         {
             endRing = col.gameObject;
             endRing.GetComponent<RingController>().DisableCollision(gameObject);
