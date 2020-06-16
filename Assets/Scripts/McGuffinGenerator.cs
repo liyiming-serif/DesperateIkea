@@ -9,7 +9,7 @@ public class McGuffinGenerator : MonoBehaviour
     };
 
     string[] ADJECTIVES = {
-        "worthless", "cherry-picked", "headless", "bean-filled", "half-empty", "aromatic", "smelly", "salty", "economic", "hypnotic", "chubby", "spotty", "tender", "flavourful", "mundane", "enchanted", "strange", "snobby", "soft", "hardened", "sour", "impractical", "crooked", "tough", "puffy", "climate-controlled", "half-working", "shiny", "rusty", "polished", "plastic", "painted", "fake", "peaceful", "belligerent", "automatic", "electronic", "nuclear-powered", "wooden", "rusted", "iron", "pasty", "lacey", "rotund", "noisy",  "caked up",  "rotting",  "sharpened",  "presumptuous",  "funny-tasting",  "toasted",  "fashionable",  "large",  "tiny",  "gargantuan",  "bus-sized",  "microscopic", "cobbled together", "fuzzy"
+        "worthless", "cherry-picked", "headless", "bean-filled", "half-empty", "aromatic", "smelly", "salty", "economic", "hypnotic", "chubby", "spotty", "tender", "flavourful", "mundane", "enchanted", "strange", "snobby", "soft", "hardened", "sour", "impractical", "crooked", "tough", "puffy", "climate-controlled", "half-working", "shiny", "rusty", "polished", "plastic", "painted", "fake", "peaceful", "belligerent", "automatic", "electronic", "nuclear-powered", "wooden", "rusted", "iron", "pasty", "lacey", "rotund", "noisy",  "caked up",  "rotting",  "sharpened",  "presumptuous",  "funny-tasting",  "toasted",  "fashionable",  "large",  "tiny",  "gargantuan",  "bus-sized",  "microscopic", "cobbled together", "fuzzy", "crystal"
     };
 
     string[] MODIFIERS = {
@@ -17,7 +17,7 @@ public class McGuffinGenerator : MonoBehaviour
     };
 
     string[] NOUNS = {
-        "skull", "bone", "seat", "toy", "board", "box", "keychain", "diamond", "jacket", "bag", "swatter", "picker-upper", "detector", "purse", "brush", "magazine", "sword", "underwear", "sack", "carriage", "alarm", "smacker", "scooper"
+        "skull", "bone", "seat", "toy", "board", "box", "keychain", "diamond", "jacket", "bag", "swatter", "picker-upper", "detector", "purse", "brush", "magazine", "sword", "underwear", "sack", "carriage", "alarm", "smacker", "scooper", "trimmer"
     };
     string[] POST_MODIFIERS = {
         "filled with", "for", "from"
@@ -40,12 +40,12 @@ public class McGuffinGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    McGuffinName = GenerateMcGuffinName();
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            McGuffinName = GenerateMcGuffinName();
 
-        //    Debug.Log("Try to get the " + McGuffinName);
-        //}
+            Debug.Log("Try to get the " + McGuffinName);
+        }
     }
 
     string GenerateMcGuffinName()
