@@ -59,3 +59,6 @@ TagManager:
   - name: UI
     uniqueID: 630802431
     locked: 0
+  - name: McGuffin
+    uniqueID: 2043369911
+    locked: 0

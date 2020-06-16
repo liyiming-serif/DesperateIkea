@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2869408714701969111}
   - component: {fileID: 3781350031377634998}
   - component: {fileID: 1850868935455509843}
+  - component: {fileID: 3279517372602850001}
   m_Layer: 17
   m_Name: McGuffin
   m_TagString: Untagged
@@ -199,3 +200,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fe0a4f7f0481b54d8c95928e74aa186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &3279517372602850001
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869408714701969105}
+  m_Enabled: 1
+  m_SortingLayerID: 2043369911
+  m_SortingLayer: 5
+  m_SortingOrder: 0
