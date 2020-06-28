@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,11 +17,15 @@ public class GameManager : MonoBehaviour
         return m_instance;
     }
 
+    public bool isTitle;
     public Text countdownText;
     public Text itemText;
 
     bool gameOver = false;
     Transform winObject;
+
+    private bool pause;
+    public Image pauseWindow;
 
     void Awake()
     {
@@ -29,7 +34,13 @@ public class GameManager : MonoBehaviour
 
         countdownText.gameObject.SetActive(false);
         itemText.gameObject.SetActive(false);
-        StartCoroutine("CountDown");
+
+        if (isTitle)
+        {
+
+            StartCoroutine("CountDown");
+        }
+
 
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("rope"), LayerMask.NameToLayer("grabbed"));
 
@@ -39,7 +50,24 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!isTitle)
+        {
+            //TankController.Instance().EnableControls(true);
+        }
+    }
 
+    void OnEnable()
+    {
+        Debug.Log("OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+        Debug.Log(mode);
+        Camera.main.GetComponent<ScreenImageEffect>().FadeIn();
     }
 
     // Update is called once per frame
@@ -104,8 +132,7 @@ public class GameManager : MonoBehaviour
         {
             gameOver = true;
             TankController.Instance().EnableControls(false);
-
-            countdownText.gameObject.SetActive(true);
+            
             winObject = target;
 
             StartCoroutine(WinAnimation());
@@ -124,6 +151,16 @@ public class GameManager : MonoBehaviour
 
         SoundManager.Instance().mcguffinRetrieve.Play();
 
+        string targetText = winObject.GetComponent<McGuffinGenerator>().GetMcGuffinName();
+        targetText = targetText.ToLower();
+        if (targetText[0] == 'a' || targetText[0] == 'e' || targetText[0] == 'i' || targetText[0] == 'o' || targetText[0] == 'u')
+        {
+            countdownText.text += "n";
+        }
+        countdownText.gameObject.SetActive(true);
+
+
+
         float lerper = 0;
         while (lerper <= 1f)
         {
@@ -137,7 +174,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        countdownText.gameObject.SetActive(true);
+        
 
         itemText.text = "";
         itemText.gameObject.SetActive(true);
@@ -145,7 +182,7 @@ public class GameManager : MonoBehaviour
         animTime = 0.3f + SoundManager.Instance().mcguffinOpen.clip.length;
         SoundManager.Instance().mcguffinOpen.Play();
 
-        string targetText = winObject.GetComponent<McGuffinGenerator>().GetMcGuffinName();
+
         int idx = 0;
         float tick = animTime / targetText.Length;
 
@@ -168,5 +205,33 @@ public class GameManager : MonoBehaviour
         }
 
         MusicManager.Instance().FadeTo(MusicManager.Instance().maxVolume, 0.3f);
+    }
+
+    IEnumerator PauseCoroutine()
+    {
+        while (true)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
+            {
+                Pauser();
+            }
+            yield return new WaitForSecondsRealtime(0.016f);
+        }
+    }
+
+    public void Pauser()
+    {
+        pause = !pause;
+        MiniMusicPlayer.Instance().FadeMusicOnPause(pause);
+        pauseWindow.gameObject.SetActive(pause);
+
+        Time.timeScale = pause ? 0 : 1;
+        //Debug.Log("paused? " + pause);
+        //Debug.Log("Timescale " + Time.timeScale);
+    }
+
+    public bool IsPaused()
+    {
+        return pause;
     }
 }

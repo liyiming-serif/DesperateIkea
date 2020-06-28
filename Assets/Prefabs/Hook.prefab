@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5284784724626895558}
   - component: {fileID: -25055258554453392}
   - component: {fileID: 4371811226528211493}
+  - component: {fileID: 745861378640013131}
   m_Layer: 14
   m_Name: Hook
   m_TagString: Untagged
@@ -104,7 +105,7 @@ Rigidbody2D:
   m_LinearDrag: 0.2
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f7a81ab7457d75247aa7c4863dad792f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -121,8 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f2b88de5be10d45b51faeddb8b725b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingAnchor: {fileID: 0}
+  startingHookLauncher: {fileID: 0}
   endRing: {fileID: 0}
+  grabbedItem: {fileID: 0}
   startingSegments: 7
   maxDistance: 1
   retractSpeedSec: 0.2
@@ -265,8 +267,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.09, y: 0}
-  m_Size: {x: 0.24, y: 0.22}
+  m_Offset: {x: 0.24, y: -0.03}
+  m_Size: {x: 0.56, y: 0.34}
   m_Direction: 1
 --- !u!82 &-25055258554453392
 AudioSource:
@@ -388,3 +390,19 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 0
     m_UpperAngle: 359
+--- !u!70 &745861378640013131
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2347120418470708407}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.18, y: 0}
+  m_Size: {x: 0.67, y: 0.8333333}
+  m_Direction: 0
