@@ -1,22 +1,25 @@
 fileFormatVersion: 2
-guid: e540f3683ac63b8469a63cd788d0249e
+guid: d7f085c01f698444287998159e3ca7d5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1817459399855178954
-    second: latch_impact_0
+      213: -4580090611912768181
+    second: jellyfish2_0
   - first:
-      213: 1056062383092077324
-    second: latch_impact_1
+      213: -3281697992398975797
+    second: jellyfish2_1
   - first:
-      213: -8035075171995816281
-    second: latch_impact_2
+      213: -6975605159458389754
+    second: jellyfish2_2
   - first:
-      213: 2931732658424707407
-    second: latch_impact_3
+      213: -1050959977700517270
+    second: jellyfish2_3
   - first:
-      213: 5503136403724414982
-    second: latch_impact_4
+      213: -459171477437113919
+    second: jellyfish2_4
+  - first:
+      213: -8968542741101290612
+    second: jellyfish2_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -60,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 24
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -102,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: latch_impact_0
+      name: jellyfish2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 51
-        height: 18
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -116,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac40012e1b9e83910800000000000000
-      internalID: 1817459399855178954
+      spriteID: b4586d5dadf3070c0800000000000000
+      internalID: -4580090611912768181
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: latch_impact_1
+      name: jellyfish2_1
       rect:
         serializedVersion: 2
-        x: 51
+        x: 48
         y: 0
-        width: 51
-        height: 18
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +140,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c031bd46423e7ae00800000000000000
-      internalID: 1056062383092077324
+      spriteID: bcc42f620111572d0800000000000000
+      internalID: -3281697992398975797
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: latch_impact_2
+      name: jellyfish2_2
       rect:
         serializedVersion: 2
-        x: 102
+        x: 96
         y: 0
-        width: 51
-        height: 18
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,8 +161,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7aee0a5e3bdad7090800000000000000
-      internalID: -8035075171995816281
+      spriteID: 601c919d01ca13f90800000000000000
+      internalID: -6975605159458389754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jellyfish2_3
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6a1200f77d3a61f0800000000000000
+      internalID: -1050959977700517270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jellyfish2_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c99e5c59f1b0a9f0800000000000000
+      internalID: -459171477437113919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jellyfish2_5
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8bdfb3f4e5598380800000000000000
+      internalID: -8968542741101290612
       vertices: []
       indices: 
       edges: []
