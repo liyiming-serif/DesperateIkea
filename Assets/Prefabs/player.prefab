@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c4a631d96b040c48b8f2ef03676b838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hookLauncherChild: {fileID: 6701549500437475560, guid: 83470a7d71b2bf146a29a325936c4b97,
+    type: 3}
   body: {fileID: 4857337325403115776}
   gunPivot: {fileID: 4857337325105381533}
   gunAngleLimits: {x: 0, y: 111}

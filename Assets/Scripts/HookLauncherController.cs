@@ -17,7 +17,7 @@ public class HookLauncherController : MonoBehaviour
     public GameObject parentRing;
     public GameObject grabbedItem;
 
-    public bool isHookLauncherActive;
+    bool isHookLauncherActive;
 
     AudioSource src;
     GameObject loadedHook;
@@ -32,6 +32,8 @@ public class HookLauncherController : MonoBehaviour
 
         loadedHook = transform.Find("LoadedHook").gameObject;
 
+        isHookLauncherActive = (parentRing == null);
+
         poof.gameObject.SetActive(false);
         poof.Play();
 
@@ -42,7 +44,7 @@ public class HookLauncherController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (!isHookLauncherActive)
+        if (!isHookLauncherActive || !TankController.Instance().AreControlsEnabled())
         {
             loadedHook.SetActive(false);
             return;
@@ -125,13 +127,17 @@ public class HookLauncherController : MonoBehaviour
         isHookLauncherActive = false;
     }
 
-    void DeactivateHookLauncher()
+    public void DeactivateHookLauncher()
     {
         isHookLauncherActive = false;
         if(parentRing != null)
         {
             parentRing.GetComponent<RingController>().EnableCollision();
         }
-        
+    }
+
+    public bool IsHookLauncherActive()
+    {
+        return isHookLauncherActive;
     }
 }

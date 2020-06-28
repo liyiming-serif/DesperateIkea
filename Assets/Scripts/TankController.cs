@@ -167,4 +167,9 @@ public class TankController : MonoBehaviour
     {
         enableControls = b;
     }
+
+    public bool AreControlsEnabled()
+    {
+        return enableControls;
+    }
 }

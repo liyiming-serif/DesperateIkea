@@ -94,7 +94,7 @@ public class SoundItem : MonoBehaviour
     IEnumerator Looper()
     {
         float startTime = Time.time;
-        float lerper = 0;
+        //float lerper = 0;
 
         A.volume = volume;
         A.clip = GetRandomClip();

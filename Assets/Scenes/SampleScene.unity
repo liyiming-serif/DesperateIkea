@@ -322,6 +322,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4857337324332742996, guid: 3ba1f6fc5a6687d4aa139f274308528a,
+        type: 3}
+      propertyPath: hookLauncherChild
+      value: 
+      objectReference: {fileID: 1442762182}
     - target: {fileID: 4857337324332742997, guid: 3ba1f6fc5a6687d4aa139f274308528a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3320,6 +3325,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1442762182 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4857337324636042006, guid: 3ba1f6fc5a6687d4aa139f274308528a,
+    type: 3}
+  m_PrefabInstance: {fileID: 305693778}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1541977112
 GameObject:
   m_ObjectHideFlags: 0

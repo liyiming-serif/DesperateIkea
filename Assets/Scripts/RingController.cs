@@ -20,13 +20,13 @@ public class RingController : MonoBehaviour
         hookLauncherChild = transform.Find("HookLauncher").gameObject;
         hookLauncherChild.GetComponent<HookLauncherController>().parentRing = gameObject;
 
-        EnableCollision();
+        hookLauncherChild.GetComponent<HookLauncherController>().DeactivateHookLauncher();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(hookLauncherChild.GetComponent<HookLauncherController>().isHookLauncherActive)
+        if(hookLauncherChild.GetComponent<HookLauncherController>().IsHookLauncherActive())
         {
             rotateTowardsMouse();
         }

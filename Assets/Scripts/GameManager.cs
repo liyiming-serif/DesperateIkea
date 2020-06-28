@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine("CountDown");
 
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("rope"), LayerMask.NameToLayer("grabbed"));
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("rope"), LayerMask.NameToLayer("takenRing"));
 
         gameOver = false;
     }
