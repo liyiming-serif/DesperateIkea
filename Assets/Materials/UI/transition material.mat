@@ -62,7 +62,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DispOn: 1
-    - _DispType: 9
+    - _DispType: 0
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -75,7 +75,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Thresh: 0
-    - _Type: 4
+    - _Type: 8
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
